@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>GymFit</artifactId>
+    <groupId>com.example</groupId>
+    <artifactId>demo</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>GymFit</name>
+    <name>demo</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,6 +24,11 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>21.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.54.1.0</version>
         </dependency>
 
         <dependency>
@@ -47,9 +52,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <release>21</release>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -60,7 +69,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.gymfit/org.example.gymfit.HelloApplication</mainClass>
+                            <mainClass>com.example.demo/com.example.demo.GymFitApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
