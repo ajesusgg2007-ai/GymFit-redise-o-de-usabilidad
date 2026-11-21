@@ -1,11 +1,8 @@
 package org.example.gymfit.model;
 
 public enum Estado {
-        OK("OK"),
-        ALTA("Alta"),
-        AL_DIA("Al día"),
-        VENCE_PRONTO("Vence pronto"),
-        VENCIDO("Vencido"),
+        OK("Activo"),
+        CONGELADO("Congelado"),
         BAJA("Baja");
 
     private final String estado;
@@ -14,7 +11,10 @@ public enum Estado {
         this.estado=estado;
     }
 
-    public String getEstado() {
-        return estado;
+    @Override
+    public String toString() {
+        return "Estado{" +
+                "estado='" + estado + '\'' +
+                '}';
     }
 }

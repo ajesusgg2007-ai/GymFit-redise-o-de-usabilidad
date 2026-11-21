@@ -1,112 +1,112 @@
 package org.example.gymfit.controller;
 
-import org.example.gymfit.model.Cuota;
-import org.example.gymfit.model.Estado;
-import org.example.gymfit.model.Usuario;
-import javafx.application.Platform;
+import com.example.demo.model.*;
+import com.example.demo.util.Fechas;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
-public class LoginController {
-    private static final String CLASE_ERROR = "con-error";
+public class MainController {
 
-    @FXML private TextField usuarioField;
-    @FXML private PasswordField contrasenaField;
-    @FXML private Label errorLabel;
-    @FXML private Button entrarButton;
+    @FXML private TableView<Socio> tablaSocios;
+    @FXML private TableColumn<Socio, String> colNombre;
+    @FXML private TableColumn<Socio, String> colFechaNac;
+    @FXML private TableColumn<Socio, String> colProvincia;
+    @FXML private TableColumn<Socio, String> colCuota;
+    @FXML private TableColumn<Socio, String> colClase;
+    @FXML private Label lblEstado;
 
-    private Consumer<Usuario> alEntrar;
-    private Runnable alSalir;
+    @FXML private SocioFormController socioFormController; // Inyectado desde fx:include
 
     @FXML
-    private void initialize() {
-        // "Entrar" solo se activa con usuario y contraseña escritos.
-        entrarButton.disableProperty().bind(
-                usuarioField.textProperty().isEmpty().or(contrasenaField.textProperty().isEmpty()));
+    public void initialize() {
+        colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombreCompleto()));
+        colFechaNac.setCellValueFactory(d -> new SimpleStringProperty(Fechas.formatear(d.getValue().getFechaNacimiento())));
+        colProvincia.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getProvincia()));
+        colCuota.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCuota().toString()));
+        colClase.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getClase()));
 
-        // En cuanto se corrige algo, el error de antes deja de ser cierto.
-        usuarioField.textProperty().addListener((o, antes, ahora) -> ocultarError());
-        contrasenaField.textProperty().addListener((o, antes, ahora) -> ocultarError());
-    }
-
-    public void configurar(Consumer<Usuario> alEntrar, Runnable alSalir) {
-        this.alEntrar = alEntrar;
-        this.alSalir = alSalir;
+        tablaSocios.setItems(SocioRepository.getSocios());
+        if (socioFormController != null) {
+            socioFormController.setOnSocioGuardado(s -> lblEstado.setText("Socio '" + s.getNombreCompleto() + "' guardado correctamente."));
+        }
     }
 
     @FXML
-    private void entrar() {
-        if (entrarButton.isDisable()) {
+    private void handleNuevoSocio() {
+        if (socioFormController != null) socioFormController.limpiarDirecto();
+    }
+
+    @FXML
+    private void handleGuardarSocio() {
+        if (socioFormController != null) socioFormController.handleGuardar();
+    }
+
+    @FXML
+    private void handleLimpiarFormulario() {
+        if (socioFormController != null) socioFormController.handleLimpiar();
+    }
+
+    @FXML
+    private void handleVerDetalle() {
+        Socio seleccionado = tablaSocios.getSelectionModel().getSelectedItem();
+        if (seleccionado == null) return;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/view/detalle-view.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Ficha de " + seleccionado.getNombreCompleto());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(loader.load()));
+            DetalleController controller = loader.getController();
+            controller.setSocio(seleccionado);
+            stage.showAndWait();
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+
+    @FXML
+    private void handleCongelarSocio() {
+        Socio seleccionado = tablaSocios.getSelectionModel().getSelectedItem();
+        if (seleccionado != null) {
+            seleccionado.setEstado(Estado.CONGELADO);
+            lblEstado.setText("Suscripción de " + seleccionado.getNombreCompleto() + " congelada.");
+        }
+    }
+
+    @FXML
+    private void handleEliminarSocio() {
+        Socio seleccionado = tablaSocios.getSelectionModel().getSelectedItem();
+        if (seleccionado == null) {
+            Alert aviso = new Alert(Alert.AlertType.WARNING, "Selecciona un socio de la tabla antes de pulsar 'Dar de baja'.");
+            aviso.setHeaderText("Ningún socio seleccionado");
+            aviso.showAndWait();
             return;
         }
-        Usuario usuario=new Usuario();
-
-        if (usuario.isPresent()) {
-            alEntrar.accept(usuario.get());
-            return;
-        }
-        // Se vacía antes de avisar: vaciar el campo también oculta el error.
-        contrasenaField.clear();
-        mostrarError("Usuario o contraseña incorrectos.");
-        marcarCampos(true);
-        contrasenaField.requestFocus();
-    }
-
-    @FXML
-    private void limpiar() {
-        usuarioField.clear();
-        contrasenaField.clear();
-        ocultarError();
-        usuarioField.requestFocus();
-    }
-
-    @FXML
-    private void enfocarUsuario() {
-        usuarioField.requestFocus();
-    }
-
-    @FXML
-    private void acercaDe() {
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION,
-                "GymFit · gestión de socios del gimnasio.\nEntra con tu usuario para ver y editar las fichas.",
-                ButtonType.CLOSE);
-        alerta.setHeaderText("Acerca de GymFit");
-        alerta.showAndWait();
-    }
-
-    @FXML
-    private void salir() {
-        alSalir.run();
-    }
-
-    private void mostrarError(String mensaje) {
-        errorLabel.setText(mensaje);
-        errorLabel.setVisible(true);
-        errorLabel.setManaged(true);
-    }
-
-    private void ocultarError() {
-        errorLabel.setVisible(false);
-        errorLabel.setManaged(false);
-        marcarCampos(false);
-    }
-
-    private void marcarCampos(boolean conError) {
-        for (TextField campo : List.of(usuarioField, contrasenaField)) {
-            campo.getStyleClass().remove(CLASE_ERROR);
-            if (conError) {
-                campo.getStyleClass().add(CLASE_ERROR);
-            }
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirmar baja");
+        confirm.setHeaderText("¿Dar de baja a " + seleccionado.getNombreCompleto() + "?");
+        confirm.setContentText("Esta acción eliminará su ficha del listado activo.");
+        Optional<ButtonType> res = confirm.showAndWait();
+        if (res.isPresent() && res.get() == ButtonType.OK) {
+            SocioRepository.eliminar(seleccionado);
+            lblEstado.setText("Baja tramitada correctamente.");
         }
     }
+
+    @FXML
+    private void handleAyuda() {
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setTitle("Ayuda - GymFit Manager");
+        info.setHeaderText("Guía rápida de recepción");
+        info.setContentText("1. Rellena los campos obligatorios (*).\n2. Pulsa 'Guardar Socio' o usa Ctrl+S.\n3. Haz clic derecho sobre una fila de la tabla para ver opciones rápidas.");
+        info.showAndWait();
+    }
+
+    @FXML
+    private void handleSalir() { System.exit(0); }
 }

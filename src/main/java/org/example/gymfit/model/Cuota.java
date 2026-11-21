@@ -2,31 +2,26 @@ package org.example.gymfit.model;
 
 public enum Cuota {
 
-    BASICA("Basica",20),
-    PLUS("Plus",40),
-    JOVEN("Joven",15);
+    BASICA("Basica"),
+    PLUS("Plus"),
+    JOVEN("Joven"),
+    SENIOR("Senior"),
+    PREMIUM("Premium");
 
-    private String tipo;
-    private int precioMes;
+    private final String tipo;
 
-    Cuota(String tipo,int precioMes) {
+    Cuota(String tipo) {
         this.tipo = tipo;
-        this.precioMes=precioMes;
     }
 
     public String getTipo() {
         return tipo;
     }
 
-    public String getPrecio() {
-        return precioMes+"€/Mes";
-    }
-
     @Override
     public String toString() {
         return "Cuota{" +
-                "tipo='" + tipo + '\'' +
-                ", precioMes=" + precioMes +
-                '}';
+                "tipo='" + tipo + '\'';
+
     }
 }
