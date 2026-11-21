@@ -2,23 +2,22 @@ package org.example.gymfit.model;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Socio {
 
-    Estado Estado;
+    Estado estado;
     String id;
     String nombre;
     String apellido1;
     String apellido2;
     LocalDate fechaNacimiento;
     Sexo sexo;
-    Provincia provincia;
+    String provincia;
     Cuota cuota;
-    List<String> clases;
+    String clases;
     String iban;
     LocalDate vencimiento;
     Situacion situacion;
@@ -26,24 +25,31 @@ public class Socio {
 
     private static final int DIAS_AVISO_VENCIMIENTO = 7;
 
-    public Socio(String id, String nombre, String apellido1, String apellido2, LocalDate fechaNacimiento, Sexo sexo, Provincia provincia, Cuota cuota, List<String> clases, String iban, LocalDate vencimiento, Estado estado,Situacion situacion) {
-        this.id = id;
+    public Socio(String nombre, String apellidos, LocalDate fechaNacimiento, Sexo sexo,
+                 String provincia, Cuota cuota, String clases, String iban) {
         this.nombre = nombre;
-        this.apellido1 = apellido1;
-        this.apellido2 = apellido2;
+
+        // Divide los apellidos en apellido1 y apellido2 si vienen separados por espacio
+        if (apellidos != null && !apellidos.isBlank()) {
+            String[] partes = apellidos.trim().split("\\s+", 2);
+            this.apellido1 = partes[0];
+            this.apellido2 = partes.length > 1 ? partes[1] : "";
+        }
+
         this.fechaNacimiento = fechaNacimiento;
         this.sexo = sexo;
         this.provincia = provincia;
         this.cuota = cuota;
         this.clases = clases;
         this.iban = iban;
-        this.vencimiento = vencimiento;
-        this.Estado = estado;
-        this.situacion=situacion;
+
+        // Valores por defecto para que no sean null al abrir la ficha de detalle
+        this.estado = Estado.ACTIVO;
+        this.situacion = Situacion.AL_CORRIENTE;
     }
 
     public Estado getEstado() {
-        return Estado;
+        return estado;
     }
 
     public String getId() {
@@ -70,7 +76,7 @@ public class Socio {
         return sexo;
     }
 
-    public Provincia getProvincia() {
+    public String getProvincia() {
         return provincia;
     }
 
@@ -78,7 +84,7 @@ public class Socio {
         return cuota;
     }
 
-    public List<String> getClases() {
+    public String getClases() {
         return clases;
     }
 
@@ -118,7 +124,7 @@ public class Socio {
         this.sexo = sexo;
     }
 
-    public void setProvincia(Provincia provincia) {
+    public void setProvincia(String provincia) {
         this.provincia = provincia;
     }
 
@@ -126,7 +132,7 @@ public class Socio {
         this.cuota = cuota;
     }
 
-    public void setClases(List<String> clases) {
+    public void setClases(String clases) {
         this.clases = clases;
     }
 
@@ -136,6 +142,10 @@ public class Socio {
 
     public void setVencimiento(LocalDate vencimiento) {
         this.vencimiento = vencimiento;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
     public void setSituacion(Situacion situacion) {

@@ -20,8 +20,6 @@ public enum Cuota {
 
     @Override
     public String toString() {
-        return "Cuota{" +
-                "tipo='" + tipo + '\'';
-
+        return tipo;
     }
 }

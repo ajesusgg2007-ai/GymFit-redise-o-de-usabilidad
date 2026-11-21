@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15.0" styleClass="panel-contenedor" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gymfit.controller.SocioFormController">
+    <padding><Insets bottom="20.0" left="25.0" right="25.0" top="20.0" /></padding>
+
+    <Label styleClass="titulo-seccion" text="Alta de Nuevo Socio" />
+    <Separator />
+
+    <GridPane hgap="15.0" vgap="12.0">
+        <columnConstraints>
+            <ColumnConstraints minWidth="140.0" prefWidth="150.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" />
+        </columnConstraints>
+
+        <Label text="Nombre *:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="txtNombre" promptText="Ej. Laura" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Apellidos *:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="txtApellidos" promptText="Ej. Gómez Ruiz" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Fecha nacimiento *:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <DatePicker fx:id="dpFechaNac" maxWidth="1.7976931348623157E308" promptText="dd/mm/aaaa" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Sexo:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <HBox spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <fx:define><ToggleGroup fx:id="grupoSexo" /></fx:define>
+            <RadioButton fx:id="rbMujer" selected="true" text="Mujer" toggleGroup="$grupoSexo" />
+            <RadioButton fx:id="rbHombre" text="Hombre" toggleGroup="$grupoSexo" />
+            <RadioButton fx:id="rbOtro" text="Otro" toggleGroup="$grupoSexo" />
+        </HBox>
+
+        <Label text="Provincia *:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <ComboBox fx:id="cbProvincia" maxWidth="1.7976931348623157E308" promptText="Seleccione provincia..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+        <Label text="Tipo de cuota *:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <FlowPane hgap="12.0" vgap="8.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <fx:define><ToggleGroup fx:id="grupoCuota" /></fx:define>
+            <RadioButton fx:id="rbBasica" selected="true" text="Básica" toggleGroup="$grupoCuota" />
+            <RadioButton fx:id="rbPlus" text="Plus" toggleGroup="$grupoCuota" />
+            <RadioButton fx:id="rbPremium" text="Premium" toggleGroup="$grupoCuota" />
+            <RadioButton fx:id="rbJoven" text="Joven" toggleGroup="$grupoCuota" />
+            <RadioButton fx:id="rbSenior" text="Senior" toggleGroup="$grupoCuota" />
+        </FlowPane>
+
+        <Label text="Clase principal:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <ComboBox fx:id="cbClases" maxWidth="1.7976931348623157E308" promptText="Seleccione actividad..." GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+        <Label text="IBAN domiciliación:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+        <TextField fx:id="txtIban" promptText="ES00 0000 0000 00 0000000000" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+    </GridPane>
+
+    <!-- Mensaje de error claro y accionable -->
+    <VBox fx:id="boxError" managed="false" spacing="4.0" styleClass="alerta-error" visible="false">
+        <Label fx:id="lblTituloError" styleClass="alerta-error-titulo" text="Error" />
+        <Label fx:id="lblDetalleError" wrapText="true" />
+    </VBox>
+
+    <Region VBox.vgrow="ALWAYS" />
+
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <Button onAction="#handleLimpiar" styleClass="btn-peligro" text="Borrar formulario" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleGuardar" styleClass="btn-primario" text="Guardar Socio" />
+    </HBox>
+</VBox>

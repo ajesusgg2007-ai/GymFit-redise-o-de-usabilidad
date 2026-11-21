@@ -1,0 +1,60 @@
+.root {
+    -fx-font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #F4F6F9;
+    -fx-text-fill: #1E293B;
+}
+
+.panel-contenedor {
+    -fx-background-color: #FFFFFF;
+}
+
+.titulo-seccion {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0F172A;
+}
+
+.toolbar-custom {
+    -fx-background-color: #E2E8F0;
+    -fx-padding: 6px 12px;
+}
+
+.btn-primario {
+    -fx-background-color: #0284C7;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 20px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+.btn-primario:hover { -fx-background-color: #0369A1; }
+
+.btn-peligro {
+    -fx-background-color: transparent;
+    -fx-text-fill: #DC2626;
+    -fx-border-color: #DC2626;
+    -fx-border-radius: 4px;
+    -fx-padding: 7px 14px;
+    -fx-cursor: hand;
+}
+.btn-peligro:hover { -fx-background-color: #FEF2F2; }
+
+.alerta-error {
+    -fx-background-color: #FEF2F2;
+    -fx-border-color: #EF4444;
+    -fx-border-width: 1px 1px 1px 4px;
+    -fx-padding: 10px;
+    -fx-background-radius: 4px;
+}
+.alerta-error-titulo {
+    -fx-font-weight: bold;
+    -fx-text-fill: #B91C1C;
+}
+
+.barra-estado {
+    -fx-background-color: #E2E8F0;
+    -fx-text-fill: #475569;
+    -fx-font-size: 12px;
+}

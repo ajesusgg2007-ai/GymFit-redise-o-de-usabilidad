@@ -7,4 +7,12 @@ public class Provincia {
         return List.of("Almería", "Cádiz", "Córdoba", "Granada", "Huelva", "Jaén", "Málaga", "Sevilla");
     }
 
+    private String provincia;
+
+    @Override
+    public String toString() {
+        return "Provincia{" +
+                "provincia='" + provincia + '\'' +
+                '}';
+    }
 }

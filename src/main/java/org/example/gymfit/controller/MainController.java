@@ -1,7 +1,7 @@
 package org.example.gymfit.controller;
 
-import com.example.demo.model.*;
-import com.example.demo.util.Fechas;
+import org.example.gymfit.model.*;
+import org.example.gymfit.util.Fechas;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,15 +26,25 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombreCompleto()));
-        colFechaNac.setCellValueFactory(d -> new SimpleStringProperty(Fechas.formatear(d.getValue().getFechaNacimiento())));
-        colProvincia.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getProvincia()));
-        colCuota.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCuota().toString()));
-        colClase.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getClase()));
+        colNombre.setCellValueFactory(d -> new SimpleStringProperty(
+                d.getValue().nombreCompleto() != null ? d.getValue().nombreCompleto() : ""
+        ));
+        colFechaNac.setCellValueFactory(d -> new SimpleStringProperty(
+                Fechas.formatear(d.getValue().getFechaNacimiento())
+        ));
+        colProvincia.setCellValueFactory(d -> new SimpleStringProperty(
+                d.getValue().getProvincia() != null ? String.valueOf(d.getValue().getProvincia()) : ""
+        ));
+        colCuota.setCellValueFactory(d -> new SimpleStringProperty(
+                d.getValue().getCuota() != null ? d.getValue().getCuota().toString() : "Sin cuota"
+        ));
+        colClase.setCellValueFactory(d -> new SimpleStringProperty(
+                d.getValue().getClases() != null ? String.join(", ", d.getValue().getClases()) : ""
+        ));
 
         tablaSocios.setItems(SocioRepository.getSocios());
         if (socioFormController != null) {
-            socioFormController.setOnSocioGuardado(s -> lblEstado.setText("Socio '" + s.getNombreCompleto() + "' guardado correctamente."));
+            socioFormController.setOnSocioGuardado(s -> lblEstado.setText("Socio '" + s.nombreCompleto() + "' guardado correctamente."));
         }
     }
 
@@ -58,15 +68,17 @@ public class MainController {
         Socio seleccionado = tablaSocios.getSelectionModel().getSelectedItem();
         if (seleccionado == null) return;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/view/detalle-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/detalle-view.fxml"));
             Stage stage = new Stage();
-            stage.setTitle("Ficha de " + seleccionado.getNombreCompleto());
+            stage.setTitle("Ficha de " + seleccionado.nombreCompleto());
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(loader.load()));
             DetalleController controller = loader.getController();
             controller.setSocio(seleccionado);
             stage.showAndWait();
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -74,7 +86,7 @@ public class MainController {
         Socio seleccionado = tablaSocios.getSelectionModel().getSelectedItem();
         if (seleccionado != null) {
             seleccionado.setEstado(Estado.CONGELADO);
-            lblEstado.setText("Suscripción de " + seleccionado.getNombreCompleto() + " congelada.");
+            lblEstado.setText("Suscripción de " + seleccionado.nombreCompleto() + " congelada.");
         }
     }
 
@@ -89,7 +101,7 @@ public class MainController {
         }
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Confirmar baja");
-        confirm.setHeaderText("¿Dar de baja a " + seleccionado.getNombreCompleto() + "?");
+        confirm.setHeaderText("¿Dar de baja a " + seleccionado.nombreCompleto() + "?");
         confirm.setContentText("Esta acción eliminará su ficha del listado activo.");
         Optional<ButtonType> res = confirm.showAndWait();
         if (res.isPresent() && res.get() == ButtonType.OK) {
@@ -108,5 +120,7 @@ public class MainController {
     }
 
     @FXML
-    private void handleSalir() { System.exit(0); }
+    private void handleSalir() {
+        System.exit(0);
+    }
 }

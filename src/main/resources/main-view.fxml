@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="800.0" prefWidth="1280.0" stylesheets="@estilos.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gymfit.controller.MainController">
+    <top>
+        <VBox>
+            <MenuBar>
+                <Menu text="Archivo">
+                    <MenuItem onAction="#handleNuevoSocio" text="Nuevo socio">
+                        <accelerator><KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" /></accelerator>
+                    </MenuItem>
+                    <MenuItem onAction="#handleGuardarSocio" text="Guardar socio">
+                        <accelerator><KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" /></accelerator>
+                    </MenuItem>
+                    <SeparatorMenuItem />
+                    <MenuItem onAction="#handleSalir" text="Salir">
+                        <accelerator><KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" /></accelerator>
+                    </MenuItem>
+                </Menu>
+                <Menu text="Editar">
+                    <MenuItem onAction="#handleLimpiarFormulario" text="Limpiar formulario">
+                        <accelerator><KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" /></accelerator>
+                    </MenuItem>
+                    <MenuItem onAction="#handleEliminarSocio" text="Dar de baja socio">
+                        <accelerator><KeyCodeCombination alt="UP" code="DELETE" control="UP" meta="UP" shift="UP" shortcut="UP" /></accelerator>
+                    </MenuItem>
+                </Menu>
+                <Menu text="Ver">
+                    <MenuItem onAction="#handleVerDetalle" text="Ver ficha del socio seleccionado" />
+                </Menu>
+                <Menu text="Ayuda">
+                    <MenuItem onAction="#handleAyuda" text="Manual rápido de recepción" />
+                </Menu>
+            </MenuBar>
+
+            <ToolBar styleClass="toolbar-custom">
+                <Button onAction="#handleNuevoSocio" text="➕ Nuevo">
+                    <tooltip><Tooltip text="Limpiar formulario para nuevo alta (Ctrl+N)" /></tooltip>
+                </Button>
+                <Button onAction="#handleGuardarSocio" text="💾 Guardar">
+                    <tooltip><Tooltip text="Guardar ficha del socio actual (Ctrl+S)" /></tooltip>
+                </Button>
+                <Separator orientation="VERTICAL" />
+                <Button onAction="#handleVerDetalle" text="👁️ Ver ficha">
+                    <tooltip><Tooltip text="Abrir detalle completo del socio seleccionado" /></tooltip>
+                </Button>
+                <Button onAction="#handleEliminarSocio" text="🗑️ Dar de baja">
+                    <tooltip><Tooltip text="Eliminar socio seleccionado de la lista" /></tooltip>
+                </Button>
+                <Separator orientation="VERTICAL" />
+                <Button onAction="#handleAyuda" text="? Ayuda">
+                    <tooltip><Tooltip text="Ayuda de uso en recepción" /></tooltip>
+                </Button>
+            </ToolBar>
+        </VBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.46">
+            <!-- Formulario embebido -->
+            <fx:include fx:id="socioForm" source="socio-form.fxml" />
+
+            <!-- Tabla de Socios -->
+            <VBox spacing="15.0" styleClass="panel-contenedor">
+                <padding><Insets bottom="20.0" left="25.0" right="25.0" top="20.0" /></padding>
+                <Label styleClass="titulo-seccion" text="Listado de Socios Registrados" />
+                <Separator />
+
+                <TableView fx:id="tablaSocios" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colNombre" prefWidth="180.0" text="Nombre y Apellidos" />
+                        <TableColumn fx:id="colFechaNac" prefWidth="110.0" text="F. Nacimiento" />
+                        <TableColumn fx:id="colProvincia" prefWidth="110.0" text="Provincia" />
+                        <TableColumn fx:id="colCuota" prefWidth="90.0" text="Cuota" />
+                        <TableColumn fx:id="colClase" prefWidth="130.0" text="Clase Principal" />
+                    </columns>
+                    <!-- Menú contextual: 5 opciones (<= 7) y SIN cascadas -->
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem onAction="#handleVerDetalle" text="Ver ficha completa" />
+                                <MenuItem onAction="#handleCongelarSocio" text="Congelar suscripción" />
+                                <MenuItem text="Renovar cuota mensual" />
+                                <SeparatorMenuItem />
+                                <MenuItem onAction="#handleEliminarSocio" text="Dar de baja" />
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </TableView>
+            </VBox>
+        </SplitPane>
+    </center>
+
+    <bottom>
+        <HBox styleClass="barra-estado">
+            <padding><Insets bottom="6.0" left="15.0" right="15.0" top="6.0" /></padding>
+            <Label fx:id="lblEstado" text="Listo. Base de datos sincronizada (socios_gymfit.tsv)" />
+        </HBox>
+    </bottom>
+</BorderPane>

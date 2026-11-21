@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefWidth="420.0" spacing="14.0" stylesheets="@estilos.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gymfit.controller.DetalleController">
+   <padding><Insets bottom="20.0" left="25.0" right="25.0" top="20.0" /></padding>
+   <Label fx:id="lblNombreCompleto" styleClass="titulo-seccion" text="Nombre del Socio" />
+   <Separator />
+   <GridPane hgap="12.0" vgap="10.0">
+      <columnConstraints>
+         <ColumnConstraints minWidth="130.0" />
+         <ColumnConstraints hgrow="ALWAYS" />
+      </columnConstraints>
+      <Label style="-fx-font-weight: bold;" text="Fecha Nacimiento:" GridPane.rowIndex="0" />
+      <Label fx:id="lblFechaNac" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      <Label style="-fx-font-weight: bold;" text="Sexo:" GridPane.rowIndex="1" />
+      <Label fx:id="lblSexo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label style="-fx-font-weight: bold;" text="Provincia:" GridPane.rowIndex="2" />
+      <Label fx:id="lblProvincia" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label style="-fx-font-weight: bold;" text="Cuota:" GridPane.rowIndex="3" />
+      <Label fx:id="lblCuota" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label style="-fx-font-weight: bold;" text="Clase Principal:" GridPane.rowIndex="4" />
+      <Label fx:id="lblClase" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label style="-fx-font-weight: bold;" text="IBAN:" GridPane.rowIndex="5" />
+      <Label fx:id="lblIban" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Label style="-fx-font-weight: bold;" text="Estado:" GridPane.rowIndex="6" />
+      <Label fx:id="lblEstado" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+   </GridPane>
+   <HBox alignment="CENTER_RIGHT">
+      <Button onAction="#handleCerrar" styleClass="btn-primario" text="Cerrar" />
+   </HBox>
+</VBox>

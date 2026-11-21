@@ -4,7 +4,7 @@ import org.example.gymfit.model.Cuota;
 
 import javafx.scene.control.Label;
 
-public class insignias {
+public class Insignias {
     public static Label crearBadgeCuota(Cuota cuota) {
         Label badge = new Label(cuota.toString());
         badge.getStyleClass().add("badge-cuota");

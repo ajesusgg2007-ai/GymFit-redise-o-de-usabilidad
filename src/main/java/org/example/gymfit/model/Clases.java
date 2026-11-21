@@ -6,4 +6,6 @@ import java.util.List;
         public static List<String> getClasesDisponibles() {
             return List.of("Musculación libre", "Spinning", "Pilates", "Yoga", "CrossFit", "Natación", "Zumba");
         }
+
+
     }
